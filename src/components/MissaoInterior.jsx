@@ -17,7 +17,7 @@ const MissaoInterior = () => {
 
   const calcular = () => {
     let total = 0;
-    const blocos3h = Math.ceil(horas / 3);
+    const blocos3h = Math.floor(horas / 3); // conta apenas blocos completos de 3h
     let detalhesCalc = "";
 
     if (!qtd || qtd < 1) return setResultado("⚠️ Informe a quantidade de missionários.");
@@ -32,8 +32,8 @@ const MissaoInterior = () => {
       total = passagemTotal + alimentacao;
 
       detalhesCalc = `
-      💵 Passagem (ida e volta): R$ ${passagemTotal.toFixed(2)}
-      🍽️ Alimentação: R$ ${alimentacao.toFixed(2)} (${blocos3h} blocos de 3h x 50 por missionário)
+💵 Passagem (ida e volta): R$ ${passagemTotal.toFixed(2)}
+🍽️ Alimentação: R$ ${alimentacao.toFixed(2)} (${blocos3h} blocos de 3h x R$50 por missionário)
       `;
     }
 
@@ -44,16 +44,21 @@ const MissaoInterior = () => {
 
       const litrosNecessarios = distancia / consumoCarro;
       const custoGasolina = litrosNecessarios * litroGasolina;
+
+      // Novo custo: 7 reais a cada 10 km
+      const custoKmExtra = Math.floor(distancia / 10) * 7;
+
       const custoCarro = 100 * blocos3h;
       const alimentacao = qtd * 50 * blocos3h;
 
-      total = custoGasolina + Number(pedagio) + custoCarro + alimentacao;
+      total = custoGasolina + Number(pedagio) + custoCarro + alimentacao + custoKmExtra;
 
       detalhesCalc = `
-      ⛽ Gasolina: R$ ${custoGasolina.toFixed(2)} (${litrosNecessarios.toFixed(2)}L x R$${litroGasolina}/L)
-      🛣️ Pedágio: R$ ${Number(pedagio).toFixed(2)}
-      🚗 Custos do carro: R$ ${custoCarro.toFixed(2)} (${blocos3h} blocos de 3h x R$100)
-      🍽️ Alimentação: R$ ${alimentacao.toFixed(2)} (${blocos3h} blocos de 3h x R$50 por missionário)
+⛽ Gasolina: R$ ${custoGasolina.toFixed(2)} (${litrosNecessarios.toFixed(2)}L x R$${litroGasolina}/L)
+🛣️ Pedágio: R$ ${Number(pedagio).toFixed(2)}
+🚗 Custos do carro: R$ ${custoCarro.toFixed(2)} (${blocos3h} blocos de 3h x R$100)
+🍽️ Alimentação: R$ ${alimentacao.toFixed(2)} (${blocos3h} blocos de 3h x R$50 por missionário)
+🛞 Custo adicional por km (R$7 a cada 10km): R$ ${custoKmExtra.toFixed(2)}
       `;
     }
 
@@ -64,8 +69,8 @@ const MissaoInterior = () => {
       total = Number(aluguel) + alimentacao;
 
       detalhesCalc = `
-      🚗 Aluguel do carro: R$ ${Number(aluguel).toFixed(2)}
-      🍽️ Alimentação: R$ ${alimentacao.toFixed(2)} (${blocos3h} blocos de 3h x R$50 por missionário)
+🚗 Aluguel do carro: R$ ${Number(aluguel).toFixed(2)}
+🍽️ Alimentação: R$ ${alimentacao.toFixed(2)} (${blocos3h} blocos de 3h x R$50 por missionário)
       `;
     }
 
@@ -92,7 +97,7 @@ const MissaoInterior = () => {
         <div>
           <label>Valor da passagem (ida)</label>
           <input type="number" value={passagem} onChange={(e) => setPassagem(Number(e.target.value))} />
-          <p>Passagem ida e volta + R$50 por missionário a cada 3h</p>
+          <p>Passagem ida e volta + R$50 por missionário a cada bloco de 3h</p>
         </div>
       )}
 
@@ -111,7 +116,9 @@ const MissaoInterior = () => {
           <label>Valor total do pedágio (R$)</label>
           <input type="number" value={pedagio} onChange={(e) => setPedagio(Number(e.target.value))} />
 
-          <p>Gasolina + pedágio + R$100 por bloco de 3h do carro + R$50 por missionário a cada bloco de 3h</p>
+          <p>
+            Gasolina + pedágio + R$100 por bloco de 3h do carro + R$50 por missionário a cada bloco de 3h + R$7 a cada 10km rodados
+          </p>
         </div>
       )}
 
@@ -120,7 +127,7 @@ const MissaoInterior = () => {
         <div>
           <label>Valor do aluguel do carro (R$)</label>
           <input type="number" value={aluguel} onChange={(e) => setAluguel(Number(e.target.value))} />
-          <p>Aluguel + R$50 por missionário a cada 3h de deslocamento</p>
+          <p>Aluguel + R$50 por missionário a cada bloco de 3h de deslocamento</p>
         </div>
       )}
 
@@ -135,11 +142,12 @@ const MissaoInterior = () => {
             <p>{resultado}</p>
           ) : (
             <>
-              <p>💰 Valor final recomendado: R$ {resultado}</p>
               <div style={{ marginTop: "10px", background: "#f9f9f9", padding: "10px", borderRadius: "5px" }}>
                 <h4>📝 Detalhes do cálculo</h4>
                 <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>{detalhes}</pre>
               </div>
+                            <p>💰 Valor final recomendado: R$ {resultado}</p>
+
             </>
           )}
         </div>
