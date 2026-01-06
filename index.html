@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Missão SP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>Calculadora de Missão</h1>
+
+  <label for="tipoMissao">Tipo de missão</label>
+  <select id="tipoMissao">
+    <option value="">Selecione...</option>
+    <option value="capital">Missão na Capital</option>
+    <option value="interior">Missão saindo da capital (Estado de SP)</option>
+    <option value="fora">Missão saindo de SP</option>
+  </select>
+
+  <!-- FORM CAPITAL -->
+  <div class="form-missao" id="formCapital">
+    <h2>Missão na Capital</h2>
+    <p>✅ Formulário da Capital ativo</p>
+  </div>
+
+  <!-- FORM INTERIOR SP -->
+  <div class="form-missao" id="formInterior">
+    <h2>Missão no Estado de SP</h2>
+    <p>✅ Formulário do Estado de SP ativo</p>
+  </div>
+
+  <!-- FORM FORA SP -->
+  <div class="form-missao" id="formFora">
+    <h2>Missão fora de SP</h2>
+    <p>✅ Formulário Fora de SP ativo</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
