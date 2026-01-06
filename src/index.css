@@ -139,19 +139,22 @@ button.secondary:hover {
 /* ===============================
    MENU MINIMALISTA
    =============================== */
+/* ===============================
+   MENU MINIMALISTA - COMPACTO
+   =============================== */
 .menu {
   display: flex;
-  justify-content: justify-start;
-  margin-bottom: 20px;
-  background-color: #f4f6f8;
-  padding: 10px 0;
+  justify-content: center; /* centraliza os botões */
+  gap: 5px; /* espaçamento entre botões */
+  margin-bottom: 15px;
+  background-color: #f9fafb; /* leve tom de fundo */
 }
 
 .menu-btn {
   background: none;
   border: none;
-  font-size: 1rem;
-  padding: 8px 12px;
+  font-size: 0.8rem; /* menor que antes */
+  padding: 5px ;   /* menos espaçamento interno */
   cursor: pointer;
   color: #555;
   transition: color 0.2s, border-bottom 0.2s;
