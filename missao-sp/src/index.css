@@ -1,0 +1,169 @@
+/* ===============================
+   RESET BÁSICO
+   =============================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===============================
+   BODY E CONTAINER
+   =============================== */
+body {
+  background-color: #f4f6f8;
+  color: #333;
+  min-height: 100vh;
+}
+
+div, section, nav {
+  box-sizing: border-box;
+}
+
+/* ===============================
+   APP PRINCIPAL
+   =============================== */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  color: #1e3a8a; /* azul escuro */
+}
+
+p {
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+input, select, button {
+  font-size: 1rem;
+  padding: 8px 10px;
+  margin: 5px 0 15px 0;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  cursor: pointer;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #3b82f6;
+}
+
+button:active{
+  background-color: #af1e1e;
+}
+
+/* ===============================
+   MENU
+   =============================== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+nav button {
+  width: 32%;
+}
+
+/* ===============================
+   CARDS
+   =============================== */
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ===============================
+   HINTS / MENSAGENS
+   =============================== */
+.hint {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #1e3a8a;
+}
+
+/* ===============================
+   RESULTADOS
+   =============================== */
+div[style*="border: 1px solid"] {
+  background-color: #f0f4ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+div[style*="border: 1px solid"] p {
+  margin-bottom: 8px;
+}
+
+button.secondary {
+  background-color: #6b7280;
+  margin-top: 10px;
+}
+
+button.secondary:hover {
+  background-color: #9ca3af;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+   =============================== */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+  }
+
+  nav button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+/* ===============================
+   MENU MINIMALISTA
+   =============================== */
+.menu {
+  display: flex;
+  justify-content: justify-start;
+  margin-bottom: 20px;
+  background-color: #f4f6f8;
+  padding: 10px 0;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s, border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.menu-btn:hover {
+  color: #1e3a8a;
+}
+
+.menu-btn.active {
+  color: #1e3a8a;
+  border-bottom: 2px solid #1e3a8a;
+  font-weight: 600;
+}
