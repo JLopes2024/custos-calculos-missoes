@@ -131,7 +131,7 @@ const MissaoInterior = () => {
         </div>
       )}
 
-      <label>Horas totais de deslocamento</label>
+      <label>Horas totais de deslocamento ida e volta</label>
       <input type="number" value={horas} onChange={(e) => setHoras(Number(e.target.value))} />
 
       <button onClick={calcular} style={{ marginTop: "10px" }}>Calcular missão</button>
@@ -146,7 +146,7 @@ const MissaoInterior = () => {
                 <h4>📝 Detalhes do cálculo</h4>
                 <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>{detalhes}</pre>
               </div>
-                            <p>💰 Valor final recomendado: R$ {resultado}</p>
+                            <p>💰 Valor final recomendado: R$ {resultado * 1.3}</p>
 
             </>
           )}
