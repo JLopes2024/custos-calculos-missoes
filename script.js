@@ -1,95 +1,153 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ======================
-     ELEMENTOS
-  ====================== */
   const tipoMissao = document.getElementById("tipoMissao");
-
   const forms = {
     capital: document.getElementById("formCapital"),
     interior: document.getElementById("formInterior"),
     fora: document.getElementById("formFora")
   };
 
-  const passagemEl = document.getElementById("passagem");
+  const qtdEl = document.getElementById("qtdMissionarios");
+  const domingoEl = document.getElementById("domingo");
+  const tipoPassagemEl = document.getElementById("tipoPassagem");
   const apos22El = document.getElementById("apos22");
   const campoUberEl = document.getElementById("campoUber");
   const uberEl = document.getElementById("uberSimulado");
 
+  const hintDomingo = document.getElementById("hintDomingo");
+
   const btnCalcular = document.getElementById("btnCalcular");
+  const btnCopiar = document.getElementById("btnCopiar");
 
-  const bannerNoturnoEl = document.getElementById("bannerNoturno");
-  const textoBaseEl = document.getElementById("textoBase");
-  const resultadoFinalEl = document.getElementById("resultadoFinal");
+  const banner = document.getElementById("bannerResultado");
+  const infoTarifa = document.getElementById("infoTarifa");
+  const textoBase = document.getElementById("textoBase");
+  const valorPorPessoa = document.getElementById("valorPorPessoa");
+  const resultadoFinal = document.getElementById("resultadoFinal");
 
-  /* ======================
-     CONTROLE DE TELAS
-  ====================== */
-  function esconderForms() {
-    Object.values(forms).forEach(f => f.style.display = "none");
-  }
+  const arredondar = v => Math.ceil(v);
 
+  /* ===============================
+     CONTROLE DE FORMULÁRIOS
+     =============================== */
   tipoMissao.addEventListener("change", () => {
-    esconderForms();
-    if (forms[tipoMissao.value]) {
-      forms[tipoMissao.value].style.display = "block";
-    }
+    Object.values(forms).forEach(f => f.style.display = "none");
+    if (forms[tipoMissao.value]) forms[tipoMissao.value].style.display = "block";
   });
 
-  /* ======================
-     VISIBILIDADE DO UBER
-  ====================== */
+  domingoEl.addEventListener("change", () => {
+    hintDomingo.innerText =
+      domingoEl.value === "sim"
+        ? "Domingo: ônibus é gratuito. Integrações cobram apenas o metrô."
+        : "";
+  });
+
   apos22El.addEventListener("change", () => {
-    if (apos22El.value === "sim") {
-      campoUberEl.style.display = "block";
-    } else {
-      campoUberEl.style.display = "none";
-      uberEl.value = "";
-    }
+    campoUberEl.style.display = apos22El.value === "sim" ? "block" : "none";
+    if (apos22El.value === "nao") uberEl.value = "";
   });
 
-  /* ======================
-     REGRAS DE NEGÓCIO
-  ====================== */
-  function arredondar(valor) {
-    return Math.ceil(valor);
+  /* ===============================
+     REGRAS DE TARIFA
+     =============================== */
+  function calcularTarifa(tipo, valor, domingo) {
+    if (domingo === "sim") {
+      if (tipo === "onibus") return 0;
+      if (tipo === "integracao") return 5.40;
+    }
+    return valor;
   }
 
-  function calcularBase(passagem) {
-    return arredondar(passagem * 2 * 1.3);
-  }
-
-  /* ======================
-     AÇÃO PRINCIPAL
-  ====================== */
+  /* ===============================
+     CÁLCULO PRINCIPAL
+     =============================== */
   btnCalcular.addEventListener("click", () => {
 
-    bannerNoturnoEl.style.display = "block";
-    textoBaseEl.innerText = "";
-    resultadoFinalEl.innerText = "";
+    banner.style.display = "block";
+    infoTarifa.innerText = "";
+    textoBase.innerText = "";
+    valorPorPessoa.innerText = "";
+    resultadoFinal.innerText = "";
 
-    const passagem = Number(passagemEl.value);
-    if (!passagem) {
-      textoBaseEl.innerText =
-        "⚠️ Informe o valor da passagem para calcular a missão.";
+    const qtd = Number(qtdEl.value);
+    if (!qtd || qtd < 1) {
+      textoBase.innerText = "⚠️ Informe a quantidade de missionários.";
       return;
     }
 
-    const base = calcularBase(passagem);
+    if (!tipoPassagemEl.value) {
+      textoBase.innerText = "⚠️ Selecione o tipo de passagem.";
+      return;
+    }
 
-    textoBaseEl.innerText =
-      `Valor base recomendado (ida e volta + 30%): R$ ${base}`;
+    const domingo = domingoEl.value;
+    const [tipo, valorStr] = tipoPassagemEl.value.split("|");
+    const valorOriginal = Number(valorStr);
+
+    const tarifaAplicada = calcularTarifa(tipo, valorOriginal, domingo);
+    const base = arredondar(tarifaAplicada * 2 * 1.3 * qtd);
+
+    infoTarifa.innerText = `Tarifa aplicada: R$ ${tarifaAplicada.toFixed(2)}`;
+
+    textoBase.innerText =
+      base === 0
+        ? "Missão no domingo com deslocamento exclusivo por ônibus."
+        : `Valor base (ida e volta + 30%): R$ ${base}`;
+
+    let total = base;
 
     if (apos22El.value === "sim") {
-      const uber = Number(uberEl.value) || 0;
-      const total = arredondar(base + uber);
-
-      resultadoFinalEl.innerText =
-        `Valor final recomendado (com Uber): R$ ${total}`;
-    } else {
-      resultadoFinalEl.innerText =
-        `Valor final recomendado: R$ ${base}`;
+      const uber = Number(uberEl.value);
+      if (!uber || uber <= 0) {
+        resultadoFinal.innerText =
+          "⚠️ Informe o valor do Uber para finalizar o cálculo.";
+        return;
+      }
+      total = arredondar(base + uber * 1.15);
     }
+
+    valorPorPessoa.innerText =
+      `Valor por missionário: R$ ${arredondar(total / qtd)}`;
+
+    resultadoFinal.innerText =
+      `Valor final recomendado: R$ ${total}`;
+  });
+
+  /* ===============================
+     COPIAR RESUMO (WHATSAPP)
+     =============================== */
+  btnCopiar.addEventListener("click", () => {
+
+    if (!resultadoFinal.innerText) {
+      alert("Calcule a missão antes de copiar.");
+      return;
+    }
+
+    const usouUber =
+      apos22El.value === "sim" && Number(uberEl.value) > 0;
+
+    const texto = `
+📌 *Missão na Capital*
+
+👥 Missionários: ${qtdEl.value}
+📅 Domingo: ${domingoEl.value === "sim" ? "Sim" : "Não"}
+
+🚍 Transporte: ${tipoPassagemEl.options[tipoPassagemEl.selectedIndex].text}
+${infoTarifa.innerText}
+
+${textoBase.innerText}
+
+${resultadoFinal.innerText}
+${valorPorPessoa.innerText}
+
+${usouUber ? "🚕 Uber aplicado -> *volta após às 22h*" : "🚶 Sem uso de Uber"}
+
+`.trim();
+
+    navigator.clipboard.writeText(texto);
+
+    btnCopiar.innerText = "Resumo copiado!";
+    setTimeout(() => btnCopiar.innerText = "Copiar resumo", 1500);
   });
 
 });

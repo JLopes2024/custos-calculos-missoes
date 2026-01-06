@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
   <main class="app">
 
     <header class="app-header">
@@ -18,9 +17,9 @@
 
     <!-- SELETOR DE CENÁRIO -->
     <section class="card">
-      <label for="tipoMissao">Tipo de missão</label>
+      <label>Tipo de missão</label>
       <select id="tipoMissao">
-        <option value="">Selecione um cenário</option>
+        <option value="">Selecione</option>
         <option value="capital">Missão na Capital</option>
         <option value="interior">Missão no Estado de SP</option>
         <option value="fora">Missão fora de SP</option>
@@ -31,11 +30,27 @@
          MISSÃO NA CAPITAL
     ======================= -->
     <section class="card form-missao" id="formCapital">
+
       <h2>Missão na Capital</h2>
 
-      <label>Valor da passagem</label>
-      <span class="info">(Considere o valor unitário de ida)</span>
-      <input type="number" id="passagem" placeholder="Ex: 4.40">
+      <label>Quantidade de missionários</label>
+      <input type="number" id="qtdMissionarios" min="2" value="2">
+
+      <label>Missão ocorre no domingo?</label>
+      <select id="domingo">
+        <option value="nao">Não</option>
+        <option value="sim">Sim</option>
+      </select>
+
+      <p class="hint" id="hintDomingo"></p>
+
+      <label>Tipo de passagem</label>
+      <select id="tipoPassagem">
+        <option value="">Selecione</option>
+        <option value="onibus|5.30">Ônibus — R$ 5,30</option>
+        <option value="metro|5.40">Metrô — R$ 5,40</option>
+        <option value="integracao|9.38">Integração Ônibus + Metrô — R$ 9,38</option>
+      </select>
 
       <label>A missão termina após as 22h?</label>
       <select id="apos22">
@@ -43,34 +58,35 @@
         <option value="sim">Sim</option>
       </select>
 
+      <div id="campoUber" style="display:none">
+        <label>Simulação de Uber (R$)</label>
+        <input type="number" id="uberSimulado" placeholder="Ex: 28">
+      </div>
 
-      <!-- BANNER DE RESULTADO -->
-      <div class="banner" id="bannerNoturno" style="display: none;">
-        <h3>Cálculos</h3>
+      <button id="btnCalcular">Calcular missão</button>
 
+      <div class="banner" id="bannerResultado">
+        <h3>Resumo da Missão</h3>
+
+        <p id="infoTarifa"></p>
         <p id="textoBase"></p>
-
-        <!-- CAMPO CONDICIONAL -->
-        <div id="campoUber" style="display: none;">
-          <label>Simulação de Uber (R$)</label>
-          <input type="number" id="uberSimulado" placeholder="Ex: 28">
-        </div>
+        <p id="valorPorPessoa"></p>
 
         <p class="total" id="resultadoFinal"></p>
+
+        <button class="secondary" id="btnCopiar">Copiar resumo</button>
       </div>
-            <button id="btnCalcular">Calcular missão</button>
 
     </section>
 
-    <!-- PLACEHOLDERS FUTUROS -->
     <section class="card form-missao" id="formInterior">
       <h2>Missão no Estado de SP</h2>
-      <p class="placeholder">Lógica em desenvolvimento</p>
+      <p class="placeholder">Em desenvolvimento</p>
     </section>
 
     <section class="card form-missao" id="formFora">
       <h2>Missão fora de SP</h2>
-      <p class="placeholder">Lógica em desenvolvimento</p>
+      <p class="placeholder">Em desenvolvimento</p>
     </section>
 
   </main>
